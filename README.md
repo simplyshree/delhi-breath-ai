@@ -1,6 +1,6 @@
 # 
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+ visit  [Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
 
 
