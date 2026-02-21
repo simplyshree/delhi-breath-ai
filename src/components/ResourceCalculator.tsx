@@ -142,7 +142,7 @@ const ResourceCalculator = () => {
     <div className="mt-20 rounded-2xl border border-border bg-card p-8 border-glow">
       <div className="flex items-center gap-3 mb-2">
         <Calculator className="h-5 w-5 text-primary" />
-        <span className="text-xs font-mono uppercase tracking-widest text-primary">ML-Driven Resource Planner</span>
+        <span className="text-xs font-mono uppercase tracking-widest text-primary">Resource Planner</span>
       </div>
       <h3 className="text-2xl font-bold mb-1">Resource & Budget Calculator</h3>
       <p className="text-muted-foreground text-sm mb-8 max-w-2xl">

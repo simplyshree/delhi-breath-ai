@@ -1,5 +1,6 @@
 import { Shield, AlertTriangle, Leaf, Home, Car, Factory, Heart, Droplets } from "lucide-react";
 import ResourceCalculator from "@/components/ResourceCalculator";
+import HospitalSearch from "@/components/HospitalSearch";
 
 const preventive = [
   {
@@ -70,8 +71,11 @@ const StrategiesSection = () => {
           Comprehensive preventive and tentative measures to combat air pollution in Delhi NCR.
         </p>
 
+        {/* Resource Calculator — moved above action plans */}
+        <ResourceCalculator />
+
         {/* Preventive */}
-        <div className="mb-16">
+        <div className="mt-16 mb-16">
           <div className="flex items-center gap-2 mb-6">
             <span className="h-1 w-8 rounded-full bg-primary" />
             <h3 className="text-lg font-semibold">Preventive Strategies</h3>
@@ -96,8 +100,8 @@ const StrategiesSection = () => {
           </div>
         </div>
 
-        {/* Resource Calculator */}
-        <ResourceCalculator />
+        {/* Hospital Search */}
+        <HospitalSearch />
       </div>
     </section>
   );

@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as ort from "onnxruntime-web";
 
+// Point WASM files to CDN since Vite dev server can't serve them from node_modules
+ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.24.2/dist/";
+
 
 // Real predicted AQI values from the RandomForestRegressor model (notebook output)
 const stationPredictions = [
