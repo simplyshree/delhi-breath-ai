@@ -43,23 +43,49 @@ function classifyAqi(aqi: number): { label: string; colorClass: string; bgClass:
 
 // Simplified approximation of the RF model for interactive predictions
 // Trained on: pm25, pm10, wind_speed, temperature, humidity, hour, month
-function approximateAqi(pm25: number, pm10: number, windSpeed: number, temp: number, humidity: number, hour: number, month: number): number {
-  // Base from pollutants (dominant contributors in RF feature importance)
-  let aqi = pm25 * 1.1 + pm10 * 0.45;
-  // Wind disperses pollutants
-  aqi -= windSpeed * 4.5;
-  // Higher humidity traps particles
-  aqi += (humidity - 50) * 0.4;
-  // Temperature inversion effect (moderate temps + high pollution = worse)
-  aqi += (temp - 25) * 0.3;
-  // Peak hours (rush hour: 8-10am, 6-8pm)
-  if ((hour >= 8 && hour <= 10) || (hour >= 18 && hour <= 20)) aqi += 18;
-  // Winter months (Oct-Feb) worst for Delhi NCR
-  if (month >= 10 || month <= 2) aqi += 35;
-  else if (month >= 3 && month <= 5) aqi += 10;
+function approximateAqi(
+  pm25: number,
+  pm10: number,
+  windSpeed: number,
+  temp: number,
+  humidity: number,
+  hour: number,
+  month: number
+): number {
+
+  // --- 1. Core pollutant contribution (calibrated to RF outputs) ---
+  // Based on your station data (~PM25: 85–110, PM10: 150–180 → AQI: 240–295)
+
+  let aqi = (pm25 * 1.35) + (pm10 * 0.55);
+
+  // --- 2. Wind dispersion (strong effect at low wind) ---
+  aqi -= 10 * Math.log(1 + windSpeed);
+
+  // --- 3. Humidity amplification ---
+  if (humidity > 50) {
+    aqi += (humidity - 50) * 0.5;
+  }
+
+  // --- 4. Temperature inversion (Delhi winter effect) ---
+  if (temp >= 5 && temp <= 20) {
+    aqi += 18;
+  }
+
+  // --- 5. Rush hour traffic boost ---
+  if ((hour >= 8 && hour <= 10) || (hour >= 18 && hour <= 20)) {
+    aqi += 20;
+  }
+
+  // --- 6. Seasonal pattern (North India pollution cycle) ---
+  if (month >= 10 || month <= 2) {
+    aqi += 40;   // Winter severe
+  } else if (month >= 3 && month <= 5) {
+    aqi += 12;   // Dust season
+  }
+
+  // Clamp to CPCB scale
   return Math.max(0, Math.min(500, Math.round(aqi)));
 }
-
 const worstStation = stationPredictions.reduce((a, b) => (a.aqi > b.aqi ? a : b));
 
 const PredictionSection = () => {
