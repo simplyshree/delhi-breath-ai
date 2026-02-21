@@ -74,18 +74,13 @@ const runPrediction = async (values: number[]) => {
   }
 
 const inputData = new Float32Array(values);
-const tensor = new ort.Tensor("float32", inputData, [1, 2])
+const tensor = new ort.Tensor("float32", inputData, [1, 7]);
 
-  const feeds = {
+const feeds: Record<string, ort.Tensor> = {
   [session.inputNames[0]]: tensor
 };
 
-  
-
-const results = await session.run({
-  [session.outputNames[0]]: tensor
-})
-
+const results = await session.run(feeds);
 const output = results[session.outputNames[0]] as ort.Tensor;
 const outputData = output.data as Float32Array;
 
